@@ -269,7 +269,35 @@ if __name__ == "__main__":
         sigma_high
     )
 
+# ---------------------------------
+# Reduce the artificial boundary
+# caused by the invalid black area
+# in the aligned image
+# ---------------------------------
 
+gray = np.mean(right_arr, axis=2)
+
+black_rows = np.mean(gray < 5, axis=1)
+
+if np.any(black_rows > 0.8):
+    boundary = np.where(black_rows > 0.8)[0][-1] + 1
+
+    fade_start = max(0, boundary - 30)
+    fade_end = min(right_arr.shape[0], boundary + 100)
+
+    mask = np.ones(right_arr.shape[0], dtype=np.float64)
+
+    t = np.linspace(
+        0.0,
+        1.0,
+        fade_end - fade_start
+    )
+
+    smooth = t * t * (3.0 - 2.0 * t)
+
+    mask[fade_start:fade_end] = smooth
+
+    high *= mask[:, np.newaxis, np.newaxis]
     # --------------------------------------------------------
     # Create Hybrid Image
     # --------------------------------------------------------

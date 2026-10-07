@@ -14,8 +14,6 @@ The implementation uses Python and NumPy for the filtering operations.
 Pillow is used only for image loading, resizing, and saving.
 No OpenCV or SciPy filtering functions are used.
 
-No OpenCV or SciPy filtering functions are used.
-
 ---
 
 ## Implemented Functions
@@ -130,6 +128,10 @@ are used to implement the required filtering functions.
 
 For faster execution, the input images are resized to a maximum
 dimension of 600 pixels before filtering.
+
+A soft mask is applied to the high-frequency component near the
+invalid boundary introduced during image alignment, reducing
+visible boundary artifacts in the final hybrid image.
 
 ---
 
